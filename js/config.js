@@ -84,7 +84,7 @@ export const config = {
                 huntRadius: 500,   // Adicionado raio de perseguição
                 face: ["😠", "😡", "😤"],
                 color: '#FFDD00',
-                healthMultiplier: 0.8
+                healthMultiplier: 0.10
             },
             hunter: {
                 name: "Caçador",
@@ -95,16 +95,16 @@ export const config = {
                 color: '#FF9900',
                 huntRadius: 500,
                 preferredDistance: 250,
-                shootCooldown: 120,
+                shootCooldown: 100,
                 projectileType: 'normal'
             },
             cosmic: {
                 name: "Cósmico",
                 chance: 0.10,
-                speed: 4.5,
+                speed: 5.5,
                 behavior: 'crossScreen',
-                face: ["☄️", "🌠"],
-                color: '#00AAFF',
+                face: ["🌑", "🌕"],
+                color: '#00aaff',
                 damage: 25,
                 ignoresAttraction: true
             },
@@ -114,9 +114,9 @@ export const config = {
                 speed: 0,
                 behavior: 'static',
                 face: ["🛰️", "📡"],
-                color: '#00FFFF',
+                color: '#0000009d',
                 healthMultiplier: 1.2,
-                shootCooldown: 180,
+                shootCooldown: 150,
                 projectileType: 'explosive'
             },
             boss: {
@@ -124,10 +124,9 @@ export const config = {
                 chance: 0, // Apenas gerado manualmente.
                 speed: 2.5,
                 behavior: 'hunt',
-                // IMAGEM_CHEFE_1: Substitua null pela URL da imagem do chefe.
                 imageUrl: null,
-                face: ["😈", "💀", "👹"],
-                color: '#FF8C00',
+                face: ["😈", "💀", "🤖"],
+                color: '#ff8c00b2',
                 size: 40,
                 health: 200,
                 huntRadius: 1000,
@@ -137,9 +136,8 @@ export const config = {
                 chance: 0, // Apenas gerado manualmente.
                 speed: 3.0,
                 behavior: 'hunt',
-                // IMAGEM_CHEFE_2: Substitua null pela URL da imagem do chefe final.
                 imageUrl: null,
-                face: ["🔥", "💥", "☄️"],
+                face: ["👤", "👁️", "👽"],
                 color: '#DC143C',
                 size: 60,
                 health: 600,
@@ -216,7 +214,7 @@ export const config = {
         completed: []
     },
 
-    soundEffects: {}, // Cache para efeitos sonoros.
+    soundEffects: {}, 
 
     story: {
         enabled: true,
@@ -235,7 +233,7 @@ export const config = {
                 effect: "terror"
             },
             {
-                npc: "👽",
+                npc: "👩‍🚀",
                 text: "*sussurro* Psst... Não olhe diretamente para ele! Use as partículas para se fortalecer...",
                 background: "radial-gradient(ellipse at center, #1B2735 0%, #090A0F 100%)",
                 effect: "normal"
