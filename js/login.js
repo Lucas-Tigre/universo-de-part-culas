@@ -6,6 +6,16 @@ const registerForm = document.getElementById('registerForm');
 const googleLoginBtn = document.getElementById('googleLoginBtn');
 const authMsg = document.getElementById('authMsg');
 
+const guestModeBtn = document.getElementById('guestModeBtn');
+const guestModeModal = document.getElementById('guestModeModal');
+const guestCancelBtn = document.getElementById('guestCancelBtn');
+const guestConfirmBtn = document.getElementById('guestConfirmBtn');
+
+const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+const resetPasswordModal = document.getElementById('resetPasswordModal');
+const closeModal = document.getElementById('closeModal');
+const resetPasswordForm = document.getElementById('resetPasswordForm');
+
 function showMsg(text, type='success') {
   if (!authMsg) return;
   authMsg.textContent = text;
@@ -78,6 +88,33 @@ registerForm?.addEventListener('submit', async e => {
 googleLoginBtn?.addEventListener('click', async e => {
   e.preventDefault();
   await signInWithGoogle();
+});
+
+guestModeBtn?.addEventListener('click', () => {
+  guestModeModal.style.display = 'flex';
+});
+
+guestCancelBtn?.addEventListener('click', () => {
+  guestModeModal.style.display = 'none';
+});
+
+guestConfirmBtn?.addEventListener('click', () => {
+  window.location.href = 'game.html';
+});
+
+forgotPasswordLink?.addEventListener('click', (e) => {
+  e.preventDefault();
+  resetPasswordModal.style.display = 'flex';
+});
+
+closeModal?.addEventListener('click', () => {
+  resetPasswordModal.style.display = 'none';
+});
+
+resetPasswordForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('resetEmail').value.trim();
+    await resetPassword(email);
 });
 
 export { signUp, signIn, signInWithGoogle, resetPassword, signOut };
