@@ -59,7 +59,10 @@ loginForm?.addEventListener('submit', async e => {
   e.preventDefault();
   const email = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
-  await signIn(email, pass);
+  const session = await signIn(email, pass);
+  if (session) {
+    window.location.href = 'game.html';
+  }
 });
 
 registerForm?.addEventListener('submit', async e => {
