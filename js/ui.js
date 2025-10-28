@@ -88,3 +88,34 @@ export function updateFPS(fps) {
         fpsCounter.textContent = `FPS: ${fps}`;
     }
 }
+
+export function showGalaxyMap(galaxies, unlockedGalaxies, onSelect) {
+    const galaxyMap = document.getElementById('galaxy-map');
+    const galaxiesList = document.getElementById('galaxies-list');
+
+    if (!galaxyMap || !galaxiesList) return;
+
+    galaxiesList.innerHTML = ''; // Limpa a lista antes de popular
+
+    for (const key in galaxies) {
+        const galaxy = galaxies[key];
+        const isUnlocked = unlockedGalaxies.includes(key);
+
+        const galaxyEl = document.createElement('div');
+        galaxyEl.className = `galaxy ${isUnlocked ? 'unlocked' : 'locked'}`;
+
+        galaxyEl.innerHTML = `
+            <h3>${galaxy.name}</h3>
+            <p>${galaxy.description}</p>
+            ${!isUnlocked ? `<small>Requer nível ${galaxy.unlockLevel}</small>` : ''}
+        `;
+
+        if (isUnlocked) {
+            galaxyEl.addEventListener('click', () => onSelect(key));
+        }
+
+        galaxiesList.appendChild(galaxyEl);
+    }
+
+    galaxyMap.style.display = 'block';
+}
