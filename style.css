@@ -129,7 +129,6 @@ canvas {
     border-radius: 10px;
     padding: 15px;
     color: white;
-    display: none;
     width: 280px;
     box-shadow: 0 0 25px rgba(74, 0, 224, 0.5);
     border: 1px solid rgba(74, 0, 224, 0.3);
@@ -166,6 +165,7 @@ canvas {
     font-size: 1.2em;
     width: 24px;
     text-align: center;
+    flex-shrink: 0;
 }
 
 .menu-text {
@@ -217,7 +217,6 @@ canvas {
     border-radius: 15px;
     color: white;
     z-index: 1000;
-    display: none;
     text-align: center;
     max-width: 90%;
     max-height: 90%;
@@ -1428,6 +1427,14 @@ body {
 #start-game-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 176, 155, 0.5);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
 }
 
 /* Estilos do Leaderboard Fixo */

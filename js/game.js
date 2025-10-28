@@ -26,11 +26,16 @@ const imageCache = {};
 // FUNÇÕES AUXILIARES
 // =============================================
 function toggleMenu(menuElement, show) {
-    const display = show ? 'block' : 'none';
     if (menuElement) {
-        menuElement.style.display = display;
+        if (show) {
+            menuElement.classList.remove('hidden');
+            menuElement.classList.add('visible');
+        } else {
+            menuElement.classList.remove('visible');
+            menuElement.classList.add('hidden');
+        }
     }
-    config.gamePaused = show; // Pausa o jogo sempre que um menu é aberto.
+    config.gamePaused = show;
 }
 
 // =============================================
@@ -521,7 +526,7 @@ function setupControls() {
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
         if (key === 'm') {
-            toggleMenu(menu, menu.style.display !== 'block');
+            toggleMenu(menu, !menu.classList.contains('visible'));
         }
         if (config.gamePaused && key !== 'm') return;
         switch (key) {
@@ -542,7 +547,7 @@ function setupControls() {
 
     document.getElementById('menu-toggle').addEventListener('click', (e) => {
         e.stopPropagation();
-        toggleMenu(menu, menu.style.display !== 'block');
+        toggleMenu(menu, !menu.classList.contains('visible'));
     });
 
     menu.addEventListener('click', (e) => {
@@ -642,6 +647,12 @@ function initGame() {
     updateStats();
     ui.updateQuestUI(config.quests.active);
     ui.toggleSoundUI(config.soundEnabled);
+
+    // Garante que os menus comecem ocultos
+    document.getElementById('menu').classList.add('hidden');
+    document.getElementById('galaxy-map').classList.add('hidden');
+    document.getElementById('skill-tree').classList.add('hidden');
+    document.getElementById('skins-modal').classList.add('hidden');
 
     // Exibe o nome da galáxia do jogador.
     const username = localStorage.getItem('username') || 'Viajante';

@@ -117,5 +117,6 @@ export function showGalaxyMap(galaxies, unlockedGalaxies, onSelect) {
         galaxiesList.appendChild(galaxyEl);
     }
 
-    galaxyMap.style.display = 'block';
+    galaxyMap.classList.remove('hidden');
+    galaxyMap.classList.add('visible');
 }
