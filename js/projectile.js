@@ -3,7 +3,7 @@ export function createProjectile(x,y,targetX,targetY,type='normal') {
   const dx = targetX - x; const dy = targetY - y;
   const dist = Math.sqrt(dx*dx+dy*dy)||1;
   const speed = (type==='fast')?6:3;
-  return { x, y, vx: (dx/dist)*speed, vy: (dy/dist)*speed, life: 300, color: (type==='fast'?'#ff0':'#fff') };
+  return { x, y, vx: (dx/dist)*speed, vy: (dy/dist)*speed, life: 300, color: (type==='fast'?'#ff0':'#fff'), size: 3 };
 }
 
 export function updateProjectiles(projectiles, deltaTime, canvasW, canvasH) {
