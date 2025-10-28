@@ -18,7 +18,7 @@ export function updateParticles(particles, player, deltaTime, lastUpdateIndex) {
     let absorbedCount = 0;
     let powerupCollected = false;
 
-    constendIndex = (lastUpdateIndex + 100) % particles.length;
+    const endIndex = (lastUpdateIndex + 100) % particles.length;
 
     for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
