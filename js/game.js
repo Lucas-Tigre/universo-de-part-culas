@@ -4,7 +4,6 @@
 import { config } from './config.js';
 import * as state from './state.js';
 import * as ui from './ui.js';
-import { displayLeaderboard } from './ui.js';
 import * as particle from './particle.js';
 import * as enemy from './enemy.js';
 import * as projectile from './projectile.js';
@@ -187,6 +186,7 @@ function spawnBatch() {
         }
     }
     state.setParticles(currentParticles);
+    console.log(`Spawned a batch. Total particles: ${currentParticles.length}`);
     if (currentParticles.length < particlesToSpawn) {
         requestAnimationFrame(spawnBatch);
     }
@@ -604,6 +604,7 @@ function setupControls() {
 
 /** Função principal que inicializa o jogo quando a página é carregada. */
 function initGame() {
+    console.log("initGame started");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const player = config.players[0];
@@ -638,9 +639,6 @@ function initGame() {
     setupControls();
     state.setGameLoopRunning(true);
     requestAnimationFrame(gameLoop);
-
-    // Carrega a tabela de pontuação
-    displayLeaderboard();
 }
 
 // Configura os listeners de eventos globais.
