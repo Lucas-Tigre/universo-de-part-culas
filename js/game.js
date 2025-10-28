@@ -6,6 +6,7 @@ import * as state from './state.js';
 import * as ui from './ui.js';
 import * as particle from './particle.js';
 import * as enemy from './enemy.js';
+import { spawnRandomEnemy } from './enemy.js';
 import * as projectile from './projectile.js';
 import * as explosion from './explosion.js';
 import { checkLevelUp as checkLevelUpLogic, showUnlockMessage, playSound, initSoundSystem, unlockAudio } from './utils.js';
@@ -44,7 +45,10 @@ function triggerBossFight(level) {
     const bossType = level === 50 ? 'finalBoss' : 'boss';
     const musicTrack = level === 50 ? 'finalBossTheme' : 'bossBattle';
     playMusic(musicTrack);
-    state.setEnemies(enemy.spawnEnemy(state.enemies, bossType));
+    const newBoss = enemy.spawnEnemy(bossType, config, config.players[0]);
+    if (newBoss) {
+        state.setEnemies([newBoss]);
+    }
 }
 
 /** Verifica se o jogador tem XP suficiente para subir de nível e lida com a lógica de progressão. */
@@ -140,7 +144,10 @@ function updateWave() {
     // Condição para gerar um novo inimigo na onda atual
     else if (config.wave.spawned < config.wave.enemiesToSpawn && config.wave.timer > 90) {
         console.log("Gerando novo inimigo.");
-        state.setEnemies(enemy.spawnEnemy(state.enemies));
+        const newEnemy = enemy.spawnRandomEnemy(config, config.players[0]);
+        if (newEnemy) {
+            state.setEnemies([...state.enemies, newEnemy]);
+        }
         config.wave.spawned++;
         config.wave.timer = 0;
     }

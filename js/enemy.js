@@ -141,7 +141,7 @@ function drawEnemies(ctx, enemies) {
 // ======================
 // GERADOR DE INIMIGOS ALEATÓRIOS
 // ======================
-function spawnRandomEnemy(config, player) {
+export function spawnRandomEnemy(config, player) {
   const enemyTypes = Object.keys(config.enemySystem.types);
   const totalChance = enemyTypes.reduce(
     (sum, key) => sum + (config.enemySystem.types[key].chance || 0),
