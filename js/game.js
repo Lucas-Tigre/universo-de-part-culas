@@ -393,7 +393,10 @@ function updatePhysics(deltaTime) {
             state.setParticles([...state.particles, ...enemyUpdate.newlyCreatedParticles]);
         }
 
-        state.setProjectiles(enemyUpdate.newProjectiles);
+        // Apenas atualiza o array de projéteis se novos foram criados para evitar 'undefined'.
+        if (enemyUpdate.newProjectiles && enemyUpdate.newProjectiles.length > 0) {
+            state.setProjectiles(enemyUpdate.newProjectiles);
+        }
 
         if (enemyUpdate.xpFromDefeatedEnemies > 0) {
             const finalXp = Math.round(enemyUpdate.xpFromDefeatedEnemies * config.globalXpMultiplier);
