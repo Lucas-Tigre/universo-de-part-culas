@@ -16,19 +16,33 @@ const resetPasswordModal = document.getElementById('resetPasswordModal');
 const closeModal = document.getElementById('closeModal');
 const resetPasswordForm = document.getElementById('resetPasswordForm');
 
+const tabs = document.querySelectorAll('.tab');
+const panes = document.querySelectorAll('.pane');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const target = document.getElementById(tab.dataset.tab);
+        panes.forEach(p => p.classList.remove('active'));
+        target.classList.add('active');
+    });
+});
+
 function showMsg(text, type='success') {
   if (!authMsg) return;
   authMsg.textContent = text;
   authMsg.className = 'msg ' + type;
 }
 
-async function signUp(email, password, nome, usuario) {
+async function signUp(email, password, usuario) {
   if (!supabase) {
     showMsg('Modo offline: cadastro não disponível.', 'error');
     return;
   }
   const { error } = await supabase.auth.signUp({
-    email, password, options: { data: { full_name: nome, username: usuario } }
+    email, password, options: { data: { username: usuario } }
   });
   if (error) showMsg('Erro ao cadastrar: ' + error.message, 'error');
   else showMsg('Conta criada! Verifique seu e-mail.', 'success');
@@ -77,12 +91,11 @@ loginForm?.addEventListener('submit', async e => {
 
 registerForm?.addEventListener('submit', async e => {
   e.preventDefault();
-  const nome = document.getElementById('regNome').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const usuario = document.getElementById('regUsuario').value.trim();
   const senha = document.getElementById('regSenha').value;
   if (senha.length < 6) return showMsg('Senha deve ter ao menos 6 chars','error');
-  await signUp(email, senha, nome, usuario);
+  await signUp(email, senha, usuario);
 });
 
 googleLoginBtn?.addEventListener('click', async e => {
