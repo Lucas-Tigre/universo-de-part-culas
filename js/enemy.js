@@ -14,7 +14,7 @@ function rand(min = 0, max = 1) {
 // ======================
 // GERAR INIMIGOS
 // ======================
-function spawnEnemy(typeKey, config, player) {
+export function spawnEnemy(typeKey, config, player) {
   const type = config.enemySystem.types[typeKey];
   if (!type) return null; // segurança extra
 
@@ -79,8 +79,8 @@ function spawnEnemy(typeKey, config, player) {
 // ======================
 // ATUALIZAÇÃO DOS INIMIGOS
 // ======================
-function updateEnemies(enemies, player) {
-  enemies.forEach(enemy => {
+export function updateEnemies(enemies, player, screenWidth, screenHeight) {
+  const remainingEnemies = enemies.filter(enemy => {
     // 🔹 Calcula a direção para o jogador
     const dx = player.x - enemy.x;
     const dy = player.y - enemy.y;
@@ -105,8 +105,11 @@ function updateEnemies(enemies, player) {
       if (player.health > 0) {
         player.health -= enemy.damage;
       }
+      return false; // Remove the enemy
     }
+    return true; // Keep the enemy
   });
+  return { newEnemies: remainingEnemies };
 }
 
 // ======================
