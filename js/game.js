@@ -417,6 +417,7 @@ function updatePhysics(deltaTime) {
     let currentProjectiles = state.projectiles;
     for (let i = currentProjectiles.length - 1; i >= 0; i--) {
         const proj = currentProjectiles[i];
+        if (!proj) continue; // Adiciona uma verificação de segurança
         const dx = player.x - proj.x;
         const dy = player.y - proj.y;
         if (Math.sqrt(dx * dx + dy * dy) < player.size + proj.size) {
@@ -463,7 +464,7 @@ function gameLoop(timestamp) {
     if (timestamp - state.fpsLastChecked >= 1000) {
         const newFps = Math.round((state.frameCount * 1000) / (timestamp - state.fpsLastChecked));
         state.setFps(newFps, timestamp, 0);
-        ui.updateFps(newFps);
+        ui.updateFPS(newFps);
     }
 
     // Atualiza o acumulador de tempo.

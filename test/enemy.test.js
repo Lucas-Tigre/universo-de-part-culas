@@ -26,14 +26,14 @@ const mockConfig = {
 
 describe('enemy logic', () => {
   it('should remove enemy on collision with player', () => {
-    const player = { x: 10, y: 10, radius: 10, health: 100 };
+    const player = { x: 10, y: 10, size: 10, health: 100 };
     const enemies = [
       spawnEnemy('grunt', mockConfig, player)
     ];
     enemies[0].x = 15;
     enemies[0].y = 15;
 
-    const { newEnemies } = updateEnemies(enemies, player, 800, 600);
+    const { newEnemies } = updateEnemies(enemies, player, 16.67, []);
 
     expect(newEnemies).toHaveLength(0);
   });

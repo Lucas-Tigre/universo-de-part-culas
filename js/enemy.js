@@ -76,46 +76,80 @@ export function spawnEnemy(typeKey, config, player) {
   return enemy;
 }
 
+import { createProjectile } from './projectile.js';
+
 // ======================
 // ATUALIZAÇÃO DOS INIMIGOS
 // ======================
-export function updateEnemies(enemies, player, screenWidth, screenHeight) {
-  const remainingEnemies = enemies.filter(enemy => {
-    // 🔹 Calcula a direção para o jogador
-    const dx = player.x - enemy.x;
-    const dy = player.y - enemy.y;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 0.001; // evita divisão por 0
+export function updateEnemies(enemies, player, deltaTime, projectiles = []) {
+    const remainingEnemies = [];
+    const newlyCreatedParticles = [];
+    let xpFromDefeatedEnemies = 0;
+    let newProjectiles = projectiles ? [...projectiles] : [];
 
-    // 🔹 Define velocidade de movimento (seguindo o jogador)
-    enemy.speedX = (dx / dist) * enemy.baseSpeed;
-    enemy.speedY = (dy / dist) * enemy.baseSpeed;
+    for (const enemy of enemies) {
+        if (!enemy) continue;
 
-    // 🔹 Atualiza posição
-    enemy.x += enemy.speedX;
-    enemy.y += enemy.speedY;
+        let enemyIsAlive = true;
 
-    // 🔹 Limita velocidade mínima (evita congelamento)
-    const minSpeed = 0.05;
-    if (Math.abs(enemy.speedX) < minSpeed) enemy.speedX = 0;
-    if (Math.abs(enemy.speedY) < minSpeed) enemy.speedY = 0;
+        // Colisão com projéteis
+        for (let i = newProjectiles.length - 1; i >= 0; i--) {
+            const proj = newProjectiles[i];
+            const dx = enemy.x - proj.x;
+            const dy = enemy.y - proj.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < enemy.radius + (proj.size || 3)) {
+                enemy.health -= player.attractionDamage;
+                newProjectiles.splice(i, 1);
+                if (enemy.health <= 0) {
+                    enemyIsAlive = false;
+                    break;
+                }
+            }
+        }
 
-    // 🔹 Detecta colisão com jogador
-    const distPlayer = Math.sqrt((player.x - enemy.x) ** 2 + (player.y - enemy.y) ** 2);
-    if (distPlayer < enemy.radius + player.radius) {
-      if (player.health > 0) {
-        player.health -= enemy.damage;
-      }
-      return false; // Remove the enemy
+        // Colisão com o jogador
+        const dxPlayer = player.x - enemy.x;
+        const dyPlayer = player.y - enemy.y;
+        const distToPlayer = Math.sqrt(dxPlayer * dxPlayer + dyPlayer * dyPlayer);
+        if (distToPlayer < enemy.radius + player.size) {
+            player.health -= enemy.damage;
+            enemyIsAlive = false;
+        }
+
+        if (enemyIsAlive) {
+            // Movimento
+            const dist = Math.sqrt(dxPlayer * dxPlayer + dyPlayer * dyPlayer) || 1;
+            enemy.speedX = (dxPlayer / dist) * enemy.baseSpeed;
+            enemy.speedY = (dyPlayer / dist) * enemy.baseSpeed;
+            enemy.x += enemy.speedX * (deltaTime / 16.67);
+            enemy.y += enemy.speedY * (deltaTime / 16.67);
+            remainingEnemies.push(enemy);
+        } else {
+            // Se morreu, gera XP e partículas
+            xpFromDefeatedEnemies += enemy.maxHealth;
+            for (let i = 0; i < (enemy.isElite ? 15 : 5); i++) {
+                newlyCreatedParticles.push({
+                    x: enemy.x, y: enemy.y,
+                    vx: Math.random() * 4 - 2, vy: Math.random() * 4 - 2,
+                    life: 150, type: 'xp'
+                });
+            }
+        }
     }
-    return true; // Keep the enemy
-  });
-  return { newEnemies: remainingEnemies };
+
+    return {
+        newEnemies: remainingEnemies,
+        newProjectiles: newProjectiles,
+        newlyCreatedParticles,
+        xpFromDefeatedEnemies,
+    };
 }
 
 // ======================
 // DESENHAR INIMIGOS NA TELA
 // ======================
-function drawEnemies(ctx, enemies) {
+export function renderEnemies(ctx, enemies) {
   enemies.forEach(enemy => {
     // 🔹 Corpo do inimigo
     ctx.beginPath();
