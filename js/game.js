@@ -376,7 +376,7 @@ function updatePhysics(deltaTime) {
         state.setParticles(particle.autoRespawnParticles(state.particles, player));
     }
 
-    const projectileUpdate = projectile.updateProjectiles(state.projectiles);
+    const projectileUpdate = projectile.updateProjectiles(state.projectiles, deltaTime, canvas.width, canvas.height);
     state.setProjectiles(projectileUpdate.remainingProjectiles);
     if (projectileUpdate.newExplosions.length > 0) {
         state.setExplosions([...state.explosions, ...projectileUpdate.newExplosions]);
