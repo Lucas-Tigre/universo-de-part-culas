@@ -81,3 +81,10 @@ export function highlightActiveMode(mode) {
         }
     });
 }
+
+export function updateFPS(fps) {
+    const fpsCounter = document.getElementById('fps-counter');
+    if (fpsCounter) {
+        fpsCounter.textContent = `FPS: ${fps}`;
+    }
+}
